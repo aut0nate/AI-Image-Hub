@@ -15,6 +15,7 @@ services:
     volumes:
       - ai-gallery-data:/app/data
       - ai-gallery-uploads:/app/uploads
+      - ai-gallery-next-cache:/app/.next/cache
     read_only: true
     tmpfs:
       - /tmp
@@ -28,6 +29,7 @@ services:
 volumes:
   ai-gallery-data:
   ai-gallery-uploads:
+  ai-gallery-next-cache:
 
 networks:
   edge-net:
