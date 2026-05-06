@@ -1,0 +1,25 @@
+services:
+  ai-gallery:
+    build:
+      context: .
+    container_name: ai-gallery-local
+    restart: unless-stopped
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      DATABASE_URL: file:/app/data/gallery.sqlite
+      UPLOAD_DIR: /app/uploads
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - ai-gallery-data:/app/data
+      - ai-gallery-uploads:/app/uploads
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+
+volumes:
+  ai-gallery-data:
+  ai-gallery-uploads:

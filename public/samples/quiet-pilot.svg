@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" role="img" aria-label="Quiet pilot sample artwork">
+  <defs>
+    <radialGradient id="halo" cx="50%" cy="35%" r="55%">
+      <stop offset="0" stop-color="#dce8ff" stop-opacity=".36"/>
+      <stop offset=".5" stop-color="#334155" stop-opacity=".2"/>
+      <stop offset="1" stop-color="#07080b" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="visor" x1="0" x2="1">
+      <stop offset="0" stop-color="#18202a"/>
+      <stop offset=".55" stop-color="#72f0ff"/>
+      <stop offset="1" stop-color="#0b1018"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1500" fill="#07080b"/>
+  <rect width="1200" height="1500" fill="url(#halo)"/>
+  <path d="M330 1280c30-260 85-410 270-410s240 150 270 410z" fill="#1c2430"/>
+  <ellipse cx="600" cy="575" rx="305" ry="375" fill="#d8d7cf"/>
+  <path d="M328 575c0-230 112-378 272-378s272 148 272 378c0 28-3 55-8 82-72-42-159-65-264-65s-192 23-264 65a439 439 0 0 1-8-82z" fill="#f2f0e5"/>
+  <path d="M380 585c70-80 145-120 220-120s150 40 220 120c-50 112-124 168-220 168s-170-56-220-168z" fill="url(#visor)" stroke="#10151d" stroke-width="18"/>
+  <path d="M260 610c-70 70-95 185-65 320M940 610c70 70 95 185 65 320" fill="none" stroke="#2a3442" stroke-width="36" stroke-linecap="round"/>
+  <circle cx="462" cy="930" r="18" fill="#c8ff73"/><circle cx="738" cy="930" r="18" fill="#c8ff73"/>
+</svg>
