@@ -240,7 +240,7 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
                 loading={index < 2 ? undefined : "lazy"}
                 priority={index < 2}
                 quality={78}
-                sizes="(max-width: 760px) 100vw, (max-width: 1180px) 33vw, 25vw"
+                sizes="(max-width: 760px) calc(100vw - 24px), 320px"
                 src={image.imagePath}
                 width={image.width}
               />
