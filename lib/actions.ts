@@ -50,6 +50,35 @@ function extensionFor(file: File) {
   return ".jpg";
 }
 
+async function prepareImageBuffer(file: File, buffer: Buffer) {
+  const metadata = await sharp(buffer, { animated: file.type === "image/gif" }).metadata();
+
+  if (file.type === "image/gif" || path.extname(file.name).toLowerCase() === ".gif") {
+    return {
+      buffer,
+      extension: extensionFor(file),
+      height: metadata.height ?? 1200,
+      width: metadata.width ?? 1200
+    };
+  }
+
+  const image = sharp(buffer).rotate().resize({
+    fit: "inside",
+    height: 1800,
+    width: 1800,
+    withoutEnlargement: true
+  });
+  const optimisedBuffer = await image.webp({ effort: 4, quality: 82 }).toBuffer();
+  const optimisedMetadata = await sharp(optimisedBuffer).metadata();
+
+  return {
+    buffer: optimisedBuffer,
+    extension: ".webp",
+    height: optimisedMetadata.height ?? metadata.height ?? 1200,
+    width: optimisedMetadata.width ?? metadata.width ?? 1200
+  };
+}
+
 async function saveUpload(file: File) {
   if (!file || file.size === 0) {
     throw new Error("Image file is required");
@@ -66,15 +95,15 @@ async function saveUpload(file: File) {
 
   const uploadDir = getUploadDir();
   await fs.mkdir(uploadDir, { recursive: true });
-  const filename = `${randomUUID()}${extensionFor(file)}`;
-  const targetPath = path.join(/* turbopackIgnore: true */ uploadDir, filename);
   const buffer = Buffer.from(await file.arrayBuffer());
-  const metadata = await sharp(buffer).metadata();
-  await fs.writeFile(targetPath, buffer);
+  const preparedImage = await prepareImageBuffer(file, buffer);
+  const filename = `${randomUUID()}${preparedImage.extension}`;
+  const targetPath = path.join(/* turbopackIgnore: true */ uploadDir, filename);
+  await fs.writeFile(targetPath, preparedImage.buffer);
   return {
     imagePath: `/uploads/${filename}`,
-    width: metadata.width ?? 1200,
-    height: metadata.height ?? 1200
+    width: preparedImage.width,
+    height: preparedImage.height
   };
 }
 

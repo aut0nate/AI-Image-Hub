@@ -235,8 +235,11 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
             >
               <Image
                 alt={image.title}
+                decoding="async"
                 height={image.height}
-                priority={index < 4}
+                loading={index < 2 ? undefined : "lazy"}
+                priority={index < 2}
+                quality={78}
                 sizes="(max-width: 760px) 100vw, (max-width: 1180px) 33vw, 25vw"
                 src={image.imagePath}
                 width={image.width}
@@ -259,7 +262,9 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
             <div className="modal-image-frame">
               <Image
                 alt={selectedImage.title}
+                decoding="async"
                 height={selectedImage.height}
+                quality={86}
                 sizes="(max-width: 1180px) 100vw, 68vw"
                 src={selectedImage.imagePath}
                 width={selectedImage.width}
