@@ -9,6 +9,7 @@ type ImageFormProps = {
   categories: string[];
   image?: GalleryImage;
   mode: "create" | "edit";
+  providers: string[];
   models: string[];
 };
 
@@ -19,8 +20,9 @@ function dateInputValue(value?: string) {
   return value.slice(0, 10);
 }
 
-export function ImageForm({ action, categories, image, mode, models }: ImageFormProps) {
+export function ImageForm({ action, categories, image, mode, models, providers }: ImageFormProps) {
   const [category, setCategory] = useState(image?.category ?? categories[0] ?? "Fantasy");
+  const [provider, setProvider] = useState(image?.provider ?? providers[0] ?? "OpenAI");
   const [model, setModel] = useState(image?.model ?? models[0] ?? "Midjourney");
   const [showAllModels, setShowAllModels] = useState(false);
   const [showAllCategories, setShowAllCategories] = useState(false);
@@ -47,6 +49,37 @@ export function ImageForm({ action, categories, image, mode, models }: ImageForm
         <div className="field">
           <label htmlFor="prompt">Prompt</label>
           <textarea id="prompt" name="prompt" required defaultValue={image?.prompt} />
+        </div>
+        <div className="field">
+          <label htmlFor="provider">Provider</label>
+          <input
+            autoComplete="off"
+            id="provider"
+            list="provider-suggestions"
+            name="provider"
+            onChange={(event) => setProvider(event.target.value)}
+            required
+            value={provider}
+          />
+          <datalist id="provider-suggestions">
+            {providers.map((existingProvider) => (
+              <option key={existingProvider} value={existingProvider} />
+            ))}
+          </datalist>
+          {providers.length > 0 ? (
+            <div className="suggestion-row" aria-label="Existing providers">
+              {providers.map((existingProvider) => (
+                <button
+                  className={`suggestion-chip ${provider === existingProvider ? "active" : ""}`}
+                  key={existingProvider}
+                  onClick={() => setProvider(existingProvider)}
+                  type="button"
+                >
+                  {existingProvider}
+                </button>
+              ))}
+            </div>
+          ) : null}
         </div>
         <div className="field">
           <label htmlFor="model">Model</label>

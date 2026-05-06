@@ -2,6 +2,7 @@ export type GalleryImage = {
   id: string;
   title: string;
   prompt: string;
+  provider: string;
   model: string;
   category: string;
   notes: string | null;
@@ -15,6 +16,7 @@ export type GalleryImage = {
 export type ImageInput = {
   title: string;
   prompt: string;
+  provider: string;
   model: string;
   category: string;
   notes: string | null;
