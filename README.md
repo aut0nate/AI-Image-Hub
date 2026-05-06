@@ -199,7 +199,7 @@ Back up the SQLite database and uploaded images regularly from the Docker volume
 
 ## AI-Assisted Development
 
-AI Art Hub was built with AI-assisted development. This repository includes an [`AGENTS.md`](./AGENTS.md) file, which provides structured instructions and context for AI coding agents. It defines expectations, constraints, and project-specific guidance to help keep contributions consistent and reliable.
+AI Art Hub was built with OpenAI Codex using GPT-5.5. This repository includes an [`AGENTS.md`](./AGENTS.md) file, which provides structured instructions and context for AI coding agents. It defines expectations, constraints, and project-specific guidance to help keep contributions consistent and reliable.
 
 ## Contributions
 
