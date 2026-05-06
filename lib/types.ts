@@ -21,4 +21,5 @@ export type ImageInput = {
   imagePath: string;
   width: number;
   height: number;
+  createdAt: string;
 };

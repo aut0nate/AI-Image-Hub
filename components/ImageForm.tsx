@@ -12,6 +12,13 @@ type ImageFormProps = {
   models: string[];
 };
 
+function dateInputValue(value?: string) {
+  if (!value) {
+    return new Date().toISOString().slice(0, 10);
+  }
+  return value.slice(0, 10);
+}
+
 export function ImageForm({ action, categories, image, mode, models }: ImageFormProps) {
   const [category, setCategory] = useState(image?.category ?? categories[0] ?? "Fantasy");
   const [model, setModel] = useState(image?.model ?? models[0] ?? "Midjourney");
@@ -29,6 +36,10 @@ export function ImageForm({ action, categories, image, mode, models }: ImageForm
             <input accept="image/*" id="image" name="image" required type="file" />
           </div>
         ) : null}
+        <div className="field">
+          <label htmlFor="createdAt">Image Date</label>
+          <input id="createdAt" name="createdAt" required type="date" defaultValue={dateInputValue(image?.createdAt)} />
+        </div>
         <div className="field">
           <label htmlFor="prompt">Prompt</label>
           <textarea id="prompt" name="prompt" required defaultValue={image?.prompt} />

@@ -9,7 +9,7 @@ dist
 coverage
 *.log
 data
-uploads
+/uploads
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal

@@ -52,7 +52,7 @@ function mapImage(row: Record<string, unknown>): GalleryImage {
 
 export function getImages() {
   const rows = openDb()
-    .prepare("SELECT * FROM images ORDER BY datetime(createdAt) DESC, title ASC")
+    .prepare("SELECT * FROM images ORDER BY date(createdAt) DESC, datetime(createdAt) DESC, title ASC")
     .all() as Record<string, unknown>[];
   return rows.map(mapImage);
 }
@@ -81,7 +81,7 @@ export function createImage(input: ImageInput) {
         @id, @title, @prompt, @model, @category, @notes, @imagePath, @width, @height, @createdAt, @updatedAt
       )
     `)
-    .run({ ...input, id, createdAt: now, updatedAt: now });
+    .run({ ...input, id, updatedAt: now });
   return id;
 }
 
@@ -95,6 +95,7 @@ export function updateImage(id: string, input: Omit<ImageInput, "imagePath" | "w
           model = @model,
           category = @category,
           notes = @notes,
+          createdAt = @createdAt,
           updatedAt = @updatedAt
       WHERE id = @id
     `)
