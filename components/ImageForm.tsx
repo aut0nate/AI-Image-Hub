@@ -22,6 +22,10 @@ function dateInputValue(value?: string) {
 export function ImageForm({ action, categories, image, mode, models }: ImageFormProps) {
   const [category, setCategory] = useState(image?.category ?? categories[0] ?? "Fantasy");
   const [model, setModel] = useState(image?.model ?? models[0] ?? "Midjourney");
+  const [showAllModels, setShowAllModels] = useState(false);
+  const [showAllCategories, setShowAllCategories] = useState(false);
+  const visibleModels = showAllModels ? models : models.slice(0, 5);
+  const visibleCategories = showAllCategories ? categories : categories.slice(0, 5);
 
   return (
     <form action={action} className="form-panel">
@@ -62,7 +66,7 @@ export function ImageForm({ action, categories, image, mode, models }: ImageForm
           </datalist>
           {models.length > 0 ? (
             <div className="suggestion-row" aria-label="Existing models">
-              {models.map((existingModel) => (
+              {visibleModels.map((existingModel) => (
                 <button
                   className={`suggestion-chip ${model === existingModel ? "active" : ""}`}
                   key={existingModel}
@@ -72,6 +76,11 @@ export function ImageForm({ action, categories, image, mode, models }: ImageForm
                   {existingModel}
                 </button>
               ))}
+              {models.length > 5 ? (
+                <button className="suggestion-chip" onClick={() => setShowAllModels((current) => !current)} type="button">
+                  {showAllModels ? "Show fewer" : `Show all (${models.length})`}
+                </button>
+              ) : null}
             </div>
           ) : null}
         </div>
@@ -93,7 +102,7 @@ export function ImageForm({ action, categories, image, mode, models }: ImageForm
           </datalist>
           {categories.length > 0 ? (
             <div className="suggestion-row" aria-label="Existing categories">
-              {categories.map((existingCategory) => (
+              {visibleCategories.map((existingCategory) => (
                 <button
                   className={`suggestion-chip ${category === existingCategory ? "active" : ""}`}
                   key={existingCategory}
@@ -103,6 +112,11 @@ export function ImageForm({ action, categories, image, mode, models }: ImageForm
                   {existingCategory}
                 </button>
               ))}
+              {categories.length > 5 ? (
+                <button className="suggestion-chip" onClick={() => setShowAllCategories((current) => !current)} type="button">
+                  {showAllCategories ? "Show fewer" : `Show all (${categories.length})`}
+                </button>
+              ) : null}
             </div>
           ) : null}
         </div>

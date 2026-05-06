@@ -63,11 +63,19 @@ export function getImage(id: string) {
 }
 
 export function getCategories() {
-  return Array.from(new Set(getImages().map((image) => image.category))).sort((a, b) => a.localeCompare(b));
+  const rows = openDb()
+    .prepare(
+      "SELECT category AS value, COUNT(*) AS usageCount FROM images GROUP BY category ORDER BY usageCount DESC, value COLLATE NOCASE ASC"
+    )
+    .all() as { value: string }[];
+  return rows.map((row) => row.value);
 }
 
 export function getModels() {
-  return Array.from(new Set(getImages().map((image) => image.model))).sort((a, b) => a.localeCompare(b));
+  const rows = openDb()
+    .prepare("SELECT model AS value, COUNT(*) AS usageCount FROM images GROUP BY model ORDER BY usageCount DESC, value COLLATE NOCASE ASC")
+    .all() as { value: string }[];
+  return rows.map((row) => row.value);
 }
 
 export function createImage(input: ImageInput) {
