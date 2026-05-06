@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1600" role="img" aria-label="Luminous citadel sample artwork">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#111827"/>
+      <stop offset="0.55" stop-color="#172016"/>
+      <stop offset="1" stop-color="#05070a"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="42%" r="52%">
+      <stop offset="0" stop-color="#c8ff73" stop-opacity=".7"/>
+      <stop offset=".36" stop-color="#5f8b45" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="1600" fill="url(#bg)"/>
+  <rect width="1200" height="1600" fill="url(#glow)"/>
+  <path d="M180 1370 310 280 580 120 880 330 1030 1370z" fill="#121820" opacity=".9"/>
+  <path d="M338 1365 420 430 590 310 760 460 840 1365z" fill="#1f2933"/>
+  <path d="M490 1365 540 570 610 510 680 585 720 1365z" fill="#0c1117"/>
+  <g fill="#c8ff73" opacity=".9">
+    <circle cx="450" cy="560" r="16"/><circle cx="744" cy="620" r="13"/><circle cx="585" cy="720" r="18"/>
+    <circle cx="390" cy="820" r="10"/><circle cx="800" cy="875" r="15"/><circle cx="570" cy="1040" r="12"/>
+  </g>
+  <g fill="none" stroke="#303a47" stroke-width="18" opacity=".8">
+    <path d="M250 1070c180-90 390-90 630 0"/>
+    <path d="M275 1210c170-65 375-65 615 0"/>
+  </g>
+  <path d="M0 1320c220-80 390-80 560 0s370 80 640-20v300H0z" fill="#07090d" opacity=".86"/>
+</svg>

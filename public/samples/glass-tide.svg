@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Glass tide sample artwork">
+  <defs>
+    <linearGradient id="sky" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0" stop-color="#101827"/>
+      <stop offset=".46" stop-color="#1b3541"/>
+      <stop offset="1" stop-color="#05070a"/>
+    </linearGradient>
+    <linearGradient id="wave" x1="0" x2="1">
+      <stop offset="0" stop-color="#d8fbff" stop-opacity=".16"/>
+      <stop offset=".45" stop-color="#9ee7ff" stop-opacity=".72"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity=".22"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#sky)"/>
+  <circle cx="830" cy="170" r="92" fill="#edf7ff" opacity=".82"/>
+  <path d="M-30 560c180-170 320-190 520-80 200 112 335 85 525-86 115-104 215-140 270-112v618H-30z" fill="#071014"/>
+  <path d="M0 515c185-180 340-160 515-63 175 97 310 66 500-112 100-94 188-126 255-96" fill="none" stroke="url(#wave)" stroke-width="72" stroke-linecap="round"/>
+  <path d="M80 690c190-50 360-50 510 0s340 52 540-10" fill="none" stroke="#c6f4ff" stroke-opacity=".24" stroke-width="12"/>
+  <path d="M125 760c120-36 242-36 365 0 155 45 315 42 482-8" fill="none" stroke="#fff" stroke-opacity=".16" stroke-width="7"/>
+</svg>

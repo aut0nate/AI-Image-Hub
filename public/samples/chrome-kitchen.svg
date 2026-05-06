@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1000" role="img" aria-label="Chrome kitchen sample artwork">
+  <defs>
+    <linearGradient id="wall" x1="0" x2="1">
+      <stop offset="0" stop-color="#111827"/>
+      <stop offset=".5" stop-color="#303743"/>
+      <stop offset="1" stop-color="#0b0f16"/>
+    </linearGradient>
+    <linearGradient id="counter" x1="0" x2="1">
+      <stop offset="0" stop-color="#111"/>
+      <stop offset=".5" stop-color="#3e4652"/>
+      <stop offset="1" stop-color="#090a0d"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1000" fill="#07080b"/>
+  <path d="M120 170h960v460H120z" fill="url(#wall)"/>
+  <path d="M120 630h960l90 250H30z" fill="url(#counter)"/>
+  <g fill="#cbd5e1" opacity=".85">
+    <path d="M190 235h220v220H190z"/><path d="M490 235h220v220H490z"/><path d="M790 235h220v220H790z"/>
+  </g>
+  <g fill="#111827">
+    <path d="M210 255h180v180H210z"/><path d="M510 255h180v180H510z"/><path d="M810 255h180v180H810z"/>
+  </g>
+  <path d="M180 575h840" stroke="#c8ff73" stroke-width="18" stroke-linecap="round" opacity=".8"/>
+  <path d="M370 690h460l72 135H298z" fill="#0c1117" stroke="#64748b" stroke-width="5"/>
+  <path d="M510 695h180v130H510z" fill="#1f2937"/>
+</svg>

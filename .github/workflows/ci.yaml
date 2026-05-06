@@ -1,0 +1,72 @@
+name: CI - Validate and build
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+env:
+  CI_IMAGE_TAG: ai-gallery:ci
+
+jobs:
+  lint-typecheck-build:
+    name: Lint, typecheck and build Docker image
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run typecheck
+        run: npm run typecheck
+
+      - name: Run linting
+        run: npm run lint
+
+      - name: Build application
+        run: npm run build
+
+      - name: Build Docker image
+        run: docker build -t "${CI_IMAGE_TAG}" .
+
+      - name: Smoke test Docker image
+        run: |
+          set -euo pipefail
+
+          docker run --detach --name ai-gallery-smoke \
+            --publish 3000:3000 \
+            --env ADMIN_USERNAME=gallery-admin \
+            --env ADMIN_PASSWORD=change-this-password \
+            --env SESSION_SECRET=ci-session-secret-change-me \
+            --env DATABASE_URL=file:/app/data/gallery.sqlite \
+            --env UPLOAD_DIR=/app/uploads \
+            "${CI_IMAGE_TAG}"
+
+          for attempt in {1..30}; do
+            if curl --fail --silent --show-error http://127.0.0.1:3000/ >/dev/null; then
+              docker logs ai-gallery-smoke
+              exit 0
+            fi
+            sleep 2
+          done
+
+          docker logs ai-gallery-smoke
+          exit 1
+
+      - name: Stop smoke test container
+        if: always()
+        run: docker rm --force ai-gallery-smoke || true
