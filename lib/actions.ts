@@ -22,6 +22,14 @@ function requireText(formData: FormData, key: string) {
   return value;
 }
 
+function requireDate(formData: FormData, key: string) {
+  const value = requireText(formData, key);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    throw new Error(`${key} must be a valid date`);
+  }
+  return `${value}T12:00:00.000Z`;
+}
+
 function titleFromPrompt(prompt: string) {
   const firstLine = prompt.replace(/\s+/g, " ").trim();
   if (firstLine.length <= 54) {
@@ -97,7 +105,8 @@ export async function createImageAction(formData: FormData) {
     notes: null,
     imagePath: upload.imagePath,
     width: upload.width,
-    height: upload.height
+    height: upload.height,
+    createdAt: requireDate(formData, "createdAt")
   });
   revalidatePath("/");
   revalidatePath("/admin");
@@ -112,7 +121,8 @@ export async function updateImageAction(id: string, formData: FormData) {
     prompt,
     model: requireText(formData, "model"),
     category: requireText(formData, "category"),
-    notes: null
+    notes: null,
+    createdAt: requireDate(formData, "createdAt")
   });
   revalidatePath("/");
   revalidatePath("/admin");
