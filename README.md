@@ -1,8 +1,8 @@
-# AI Image Gallery
+# AI Art Hub
 
 ## Introduction
 
-AI Image Gallery is a dark-mode personal gallery for publishing AI-generated images and the prompts behind them.
+AI Art Hub is a dark-mode personal gallery for publishing AI-generated images and the prompts behind them.
 
 It is designed for a single owner who wants a simple public showcase with a protected admin area for uploading, editing, and deleting images. The public site is browse-only and deliberately avoids social features.
 
