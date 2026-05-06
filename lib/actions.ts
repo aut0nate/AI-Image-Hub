@@ -129,6 +129,7 @@ export async function createImageAction(formData: FormData) {
   createImage({
     title: titleFromPrompt(prompt),
     prompt,
+    provider: requireText(formData, "provider"),
     model: requireText(formData, "model"),
     category: requireText(formData, "category"),
     notes: null,
@@ -148,6 +149,7 @@ export async function updateImageAction(id: string, formData: FormData) {
   updateImage(id, {
     title: titleFromPrompt(prompt),
     prompt,
+    provider: requireText(formData, "provider"),
     model: requireText(formData, "model"),
     category: requireText(formData, "category"),
     notes: null,

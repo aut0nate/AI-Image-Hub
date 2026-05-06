@@ -41,7 +41,7 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
     return images.filter((image) => {
       const categoryMatches = activeCategories.length === 0 || activeCategories.includes(image.category);
       const modelMatches = activeModels.length === 0 || activeModels.includes(image.model);
-      const searchableText = `${image.title} ${image.prompt}`.toLowerCase();
+      const searchableText = `${image.title} ${image.prompt} ${image.provider} ${image.model}`.toLowerCase();
       const searchMatches = searchKeywords.every((keyword) => searchableText.includes(keyword));
       return categoryMatches && modelMatches && searchMatches;
     });
@@ -315,6 +315,10 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
                 ) : null}
               </div>
               <div className="meta-grid">
+                <div className="meta-item">
+                  <span className="meta-label">Provider</span>
+                  <span className="meta-value">{selectedImage.provider}</span>
+                </div>
                 <div className="meta-item">
                   <span className="meta-label">Model</span>
                   <span className="meta-value">{selectedImage.model}</span>

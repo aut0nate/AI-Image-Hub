@@ -21,6 +21,7 @@ function openDb() {
       id TEXT PRIMARY KEY,
       title TEXT NOT NULL,
       prompt TEXT NOT NULL,
+      provider TEXT NOT NULL DEFAULT 'Unknown',
       model TEXT NOT NULL,
       category TEXT NOT NULL,
       notes TEXT,
@@ -31,6 +32,10 @@ function openDb() {
       updatedAt TEXT NOT NULL
     );
   `);
+  const columns = db.prepare("PRAGMA table_info(images)").all() as Array<{ name: string }>;
+  if (!columns.some((column) => column.name === "provider")) {
+    db.exec("ALTER TABLE images ADD COLUMN provider TEXT NOT NULL DEFAULT 'Unknown'");
+  }
   return db;
 }
 
@@ -39,6 +44,7 @@ function mapImage(row: Record<string, unknown>): GalleryImage {
     id: String(row.id),
     title: String(row.title),
     prompt: String(row.prompt),
+    provider: String(row.provider ?? "Unknown"),
     model: String(row.model),
     category: String(row.category),
     notes: row.notes === null ? null : String(row.notes),
@@ -70,15 +76,19 @@ export function getModels() {
   return Array.from(new Set(getImages().map((image) => image.model))).sort((a, b) => a.localeCompare(b));
 }
 
+export function getProviders() {
+  return Array.from(new Set(getImages().map((image) => image.provider))).sort((a, b) => a.localeCompare(b));
+}
+
 export function createImage(input: ImageInput) {
   const now = new Date().toISOString();
   const id = randomUUID();
   openDb()
     .prepare(`
       INSERT INTO images (
-        id, title, prompt, model, category, notes, imagePath, width, height, createdAt, updatedAt
+        id, title, prompt, provider, model, category, notes, imagePath, width, height, createdAt, updatedAt
       ) VALUES (
-        @id, @title, @prompt, @model, @category, @notes, @imagePath, @width, @height, @createdAt, @updatedAt
+        @id, @title, @prompt, @provider, @model, @category, @notes, @imagePath, @width, @height, @createdAt, @updatedAt
       )
     `)
     .run({ ...input, id, updatedAt: now });
@@ -92,6 +102,7 @@ export function updateImage(id: string, input: Omit<ImageInput, "imagePath" | "w
       UPDATE images
       SET title = @title,
           prompt = @prompt,
+          provider = @provider,
           model = @model,
           category = @category,
           notes = @notes,

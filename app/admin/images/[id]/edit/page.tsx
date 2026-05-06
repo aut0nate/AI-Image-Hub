@@ -2,7 +2,7 @@ import { notFound, redirect } from "next/navigation";
 import { ImageForm } from "@/components/ImageForm";
 import { updateImageAction } from "@/lib/actions";
 import { getAdminSession } from "@/lib/auth";
-import { getCategories, getImage, getModels } from "@/lib/db";
+import { getCategories, getImage, getModels, getProviders } from "@/lib/db";
 
 type EditImagePageProps = {
   params: Promise<{
@@ -21,6 +21,7 @@ export default async function EditImagePage({ params }: EditImagePageProps) {
     notFound();
   }
   const categories = getCategories();
+  const providers = getProviders();
   const models = getModels();
 
   return (
@@ -32,6 +33,7 @@ export default async function EditImagePage({ params }: EditImagePageProps) {
           image={image}
           mode="edit"
           models={models}
+          providers={providers}
         />
       </div>
     </main>

@@ -31,7 +31,7 @@ export function AdminShell({ categories, images, models }: AdminShellProps) {
     return images.filter((image) => {
       const categoryMatches = activeCategories.length === 0 || activeCategories.includes(image.category);
       const modelMatches = activeModels.length === 0 || activeModels.includes(image.model);
-      const searchableText = `${image.title} ${image.prompt} ${image.model} ${image.category}`.toLowerCase();
+      const searchableText = `${image.title} ${image.prompt} ${image.provider} ${image.model} ${image.category}`.toLowerCase();
       const searchMatches = searchKeywords.every((keyword) => searchableText.includes(keyword));
       return categoryMatches && modelMatches && searchMatches;
     });
@@ -162,7 +162,7 @@ export function AdminShell({ categories, images, models }: AdminShellProps) {
                 <div>
                   <p className="admin-row-title">{image.title}</p>
                   <p className="admin-row-meta">
-                    {image.category} · {image.model} · {formatDate(image.createdAt)}
+                    {image.category} · {image.provider} · {image.model} · {formatDate(image.createdAt)}
                   </p>
                 </div>
                 <div className="row-actions">
