@@ -25,6 +25,7 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
   const [filtersOpen, setFiltersOpen] = useState(false);
   const [copiedImageId, setCopiedImageId] = useState<string | null>(null);
   const [expandedPromptImageId, setExpandedPromptImageId] = useState<string | null>(null);
+  const [isMobileImageExpanded, setIsMobileImageExpanded] = useState(false);
   const selectedId = searchParams.get("image");
   const selectedImage = images.find((image) => image.id === selectedId) ?? null;
   const shouldCollapsePrompt = Boolean(selectedImage && selectedImage.prompt.length > 360);
@@ -65,12 +66,14 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
   }
 
   function openImage(id: string) {
+    setIsMobileImageExpanded(false);
     const params = new URLSearchParams(searchParams.toString());
     params.set("image", id);
     router.push(`${pathname}?${params.toString()}`, { scroll: false });
   }
 
   function closeImage() {
+    setIsMobileImageExpanded(false);
     const params = new URLSearchParams(searchParams.toString());
     params.delete("image");
     const query = params.toString();
@@ -255,11 +258,20 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
 
       {selectedImage ? (
         <section aria-modal="true" className="modal-backdrop" onClick={closeImage} role="dialog">
-          <div className="modal-shell" onClick={(event) => event.stopPropagation()}>
+          <div
+            className={`modal-shell ${isMobileImageExpanded ? "mobile-image-expanded" : ""}`}
+            onClick={(event) => event.stopPropagation()}
+          >
             <button aria-label="Close image" className="icon-button" onClick={closeImage} type="button">
               <X size={18} />
             </button>
-            <div className="modal-image-frame">
+            <button
+              aria-expanded={isMobileImageExpanded}
+              aria-label={isMobileImageExpanded ? "Collapse full-size image" : "Expand image to full size"}
+              className={`modal-image-frame ${isMobileImageExpanded ? "expanded" : ""}`}
+              onClick={() => setIsMobileImageExpanded((expanded) => !expanded)}
+              type="button"
+            >
               <Image
                 alt={selectedImage.title}
                 decoding="async"
@@ -269,7 +281,7 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
                 src={selectedImage.imagePath}
                 width={selectedImage.width}
               />
-            </div>
+            </button>
             <aside className="prompt-panel">
               <div className="prompt-heading">
                 <h2>Prompt Details</h2>

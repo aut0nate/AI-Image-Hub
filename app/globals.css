@@ -408,6 +408,9 @@ img {
   place-items: center;
   border-radius: 28px;
   background: #0f1219;
+  cursor: zoom-in;
+  padding: 0;
+  text-align: inherit;
 }
 
 .modal-image-frame img {
@@ -415,6 +418,7 @@ img {
   height: auto;
   max-height: calc(100dvh - clamp(28px, 6vw, 76px));
   object-fit: contain;
+  transition: max-height 260ms ease, transform 260ms ease;
 }
 
 .prompt-panel {
@@ -1052,6 +1056,42 @@ img {
 
   .topbar-actions {
     width: 100%;
+  }
+}
+
+
+@media (max-width: 760px) {
+  .modal-shell {
+    transition: grid-template-rows 260ms ease;
+  }
+
+  .modal-image-frame {
+    transition: max-height 260ms ease, border-color 220ms ease;
+  }
+
+  .modal-shell.mobile-image-expanded .modal-image-frame {
+    max-height: calc(100dvh - 28px);
+    cursor: zoom-out;
+  }
+
+  .modal-shell.mobile-image-expanded .modal-image-frame img {
+    max-height: calc(100dvh - 28px);
+  }
+
+  .prompt-panel {
+    transition: opacity 220ms ease, transform 220ms ease, max-height 260ms ease, margin 260ms ease, padding 260ms ease;
+  }
+
+  .modal-shell.mobile-image-expanded .prompt-panel {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    pointer-events: none;
+    transform: translateY(10px);
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-width: 0;
   }
 }
 
