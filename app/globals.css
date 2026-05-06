@@ -285,6 +285,11 @@ img {
   gap: 10px;
 }
 
+.filter-menu-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .filter-menu-heading {
   display: flex;
   align-items: center;
