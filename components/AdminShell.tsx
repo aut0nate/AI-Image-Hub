@@ -146,6 +146,11 @@ export function AdminShell({ categories, images, models }: AdminShellProps) {
                       ))}
                     </div>
                   </div>
+                  <div className="filter-menu-actions">
+                    <button className="button" onClick={() => setFiltersOpen(false)} type="button">
+                      Apply
+                    </button>
+                  </div>
                 </div>
               ) : null}
             </div>

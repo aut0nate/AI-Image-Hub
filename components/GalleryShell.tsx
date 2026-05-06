@@ -220,6 +220,11 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
                   ))}
                 </div>
               </div>
+              <div className="filter-menu-actions">
+                <button className="button" onClick={() => setFiltersOpen(false)} type="button">
+                  Apply
+                </button>
+              </div>
             </div>
           ) : null}
         </div>
