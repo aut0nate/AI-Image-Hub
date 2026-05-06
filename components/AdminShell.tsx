@@ -158,7 +158,7 @@ export function AdminShell({ categories, images, models }: AdminShellProps) {
           <div className="admin-list">
             {filteredImages.map((image) => (
               <article className="admin-row" key={image.id}>
-                <Image alt="" height={72} sizes="72px" src={image.imagePath} width={72} />
+                <Image alt="" height={72} loading="lazy" quality={60} sizes="72px" src={image.imagePath} width={72} />
                 <div>
                   <p className="admin-row-title">{image.title}</p>
                   <p className="admin-row-meta">

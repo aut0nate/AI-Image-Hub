@@ -90,19 +90,14 @@ img {
   width: 56px;
   height: 56px;
   place-items: center;
-  border: 1px solid var(--border-strong);
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.04);
-  box-shadow:
-    inset 0 0 18px rgba(255, 255, 255, 0.04),
-    0 12px 34px rgba(0, 0, 0, 0.28);
+  flex: 0 0 auto;
 }
 
 .brand-mark img {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  object-fit: cover;
+  width: 56px;
+  height: 56px;
+  border-radius: 0;
+  object-fit: contain;
 }
 
 .brand-text {
@@ -718,11 +713,13 @@ img {
 .field-grid {
   display: grid;
   gap: 16px;
+  min-width: 0;
 }
 
 .field {
   display: grid;
   gap: 8px;
+  min-width: 0;
 }
 
 .field label {
@@ -764,12 +761,37 @@ img {
 .field textarea,
 .field select {
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   border: 1px solid var(--border);
   border-radius: 16px;
   color: var(--text);
   background: rgba(255, 255, 255, 0.055);
   padding: 13px 14px;
   outline: none;
+}
+
+.field input[type="date"] {
+  min-height: 52px;
+  line-height: 1.2;
+}
+
+.field input[type="file"] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.field input::file-selector-button {
+  max-width: 48%;
+  margin-right: 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.06);
+  padding: 7px 11px;
+  font: inherit;
+  font-weight: 680;
 }
 
 .field textarea {
@@ -879,7 +901,7 @@ img {
 
 @media (max-width: 760px) {
   .page-shell {
-    padding-inline: 14px;
+    padding: 18px 14px 42px;
   }
 
   .login-page {
@@ -902,8 +924,8 @@ img {
   }
 
   .brand-mark img {
-    width: 38px;
-    height: 38px;
+    width: 46px;
+    height: 46px;
   }
 
   .gallery-filter-panel {
@@ -961,9 +983,78 @@ img {
   .copy-button {
     width: 100%;
   }
+
+  .form-shell,
+  .admin-shell {
+    width: 100%;
+  }
+
+  .form-panel,
+  .admin-panel {
+    gap: 18px;
+    padding: 20px;
+  }
+
+  .form-panel h1,
+  .admin-panel h1 {
+    font-size: clamp(2rem, 10vw, 2.7rem);
+  }
+
+  .field input,
+  .field textarea,
+  .field select {
+    border-radius: 18px;
+    font-size: 1rem;
+    padding: 14px 16px;
+  }
+
+  .field input[type="date"] {
+    display: block;
+    min-height: 56px;
+    padding-right: 16px;
+    text-align: left;
+  }
+
+  .field input[type="file"] {
+    font-size: 0.92rem;
+  }
+
+  .suggestion-row {
+    display: none;
+  }
+
+  .topbar-actions {
+    width: 100%;
+  }
 }
 
 @media (max-width: 460px) {
+  .page-shell {
+    padding-inline: 12px;
+  }
+
+  .form-panel,
+  .admin-panel {
+    border-radius: 22px;
+    padding: 18px;
+  }
+
+  .form-panel .topbar-actions {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  }
+
+  .form-panel .topbar-actions .button {
+    width: 100%;
+    min-width: 0;
+    padding-inline: 12px;
+  }
+
+  .field input::file-selector-button {
+    max-width: 42%;
+    padding-inline: 9px;
+  }
+
   .modal-backdrop {
     align-items: start;
     overflow: auto;
