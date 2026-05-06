@@ -57,13 +57,11 @@ UPLOAD_DIR=./uploads
 IMAGE_TAG=latest
 ```
 
-Generate a stronger session secret with:
+You can generate a suitable `SESSION_SECRET` with:
 
 ```bash
 openssl rand -base64 32
 ```
-
-Do not commit `.env` files, credentials, database files, uploads, or private keys to GitHub.
 
 ## Test Locally
 
@@ -145,7 +143,7 @@ Back up the SQLite database and uploads regularly from the Docker volumes or fro
 
 ## AI-Assisted Development
 
-AI Image Gallery was built with AI-assisted development. This repository includes an [`AGENTS.md`](./AGENTS.md) file, which provides structured instructions and context for AI coding agents. It defines expectations, constraints, and project-specific guidance to help keep contributions consistent and reliable.
+AI Image Gallery was built with OpenAI Codex using GPT-5.5. This repository includes an [`AGENTS.md`](./AGENTS.md) file, which provides structured instructions and context for AI coding agents. It defines expectations, constraints, and project-specific guidance to help keep contributions consistent and reliable.
 
 ## Contributions
 
