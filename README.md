@@ -6,6 +6,9 @@ AI Art Hub is a personal web app for publishing AI-generated images and the prom
 
 It is for people who want a simple gallery where visitors can browse finished images, view prompt details, and filter the collection by category. The public site is browse-only, while a single owner can sign in to upload, edit, and delete images.
 
+![Screenshot or Preview](./images/AI-Art-Hub.jpeg)
+
+
 ## Features
 
 - Publish AI-generated images with their prompts, model details, categories, and dates.
