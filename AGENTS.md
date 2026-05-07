@@ -40,12 +40,14 @@ npm run build
 Copy `.env.example` to `.env` and set strong values before production use.
 
 - `ADMIN_USERNAME`: owner login username
-- `ADMIN_PASSWORD`: owner login password
+- `ADMIN_PASSWORD_HASH`: bcrypt hash of the owner login password
 - `SESSION_SECRET`: long random string used to sign admin sessions
 - `DATABASE_URL`: SQLite database path, for example `file:./data/gallery.sqlite`
 - `UPLOAD_DIR`: folder for uploaded images, for example `./uploads`
 
-Never commit `.env`, credentials, database files, uploaded images, or private keys.
+Generate password hashes with `npm run password:hash -- "your-strong-password"` and generate session secrets with `openssl rand -base64 48`. In Next.js `.env` files, bcrypt hash `$` characters must be escaped as `\$`. In Docker Compose `.env` files, use `$$` instead so Compose does not treat bcrypt segments as environment variable names.
+
+Never commit `.env`, plaintext passwords, credentials, database files, uploaded images, or private keys.
 
 ## Code Style Guidelines
 - Use British English for UI text, comments, documentation, and example content.
@@ -73,7 +75,9 @@ Manually verify:
 
 ## Security Considerations
 - Admin access is intentionally single-owner only.
-- Sessions are stored in signed HTTP-only cookies.
+- Admin passwords are verified with bcrypt hashes only.
+- Sessions are stored in signed HTTP-only cookies with server-side expiry checks.
+- Failed login attempts are throttled by username and IP address.
 - Uploaded files must be images and should remain size-limited.
 - Do not hardcode secrets or credentials.
 - Keep uploaded files and SQLite data in persistent volumes on the VPS.
