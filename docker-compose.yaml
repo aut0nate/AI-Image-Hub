@@ -8,6 +8,7 @@ services:
       - path: .env
         required: false
     environment:
+      HOSTNAME: 0.0.0.0
       DATABASE_URL: file:/app/data/gallery.sqlite
       UPLOAD_DIR: /app/uploads
     ports:

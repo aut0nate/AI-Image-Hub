@@ -50,7 +50,7 @@ jobs:
           docker run --detach --name ai-gallery-smoke \
             --publish 3000:3000 \
             --env ADMIN_USERNAME=gallery-admin \
-            --env ADMIN_PASSWORD=change-this-password \
+            --env 'ADMIN_PASSWORD_HASH=$2b$12$QyGvg76XRDuMcKdpLj70jOMuuhFpkl21eSzC32GC8tq2SI2QUSPR.' \
             --env SESSION_SECRET=ci-session-secret-change-me \
             --env DATABASE_URL=file:/app/data/gallery.sqlite \
             --env UPLOAD_DIR=/app/uploads \

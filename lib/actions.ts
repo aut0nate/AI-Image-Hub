@@ -5,6 +5,7 @@ import path from "node:path";
 import { randomUUID } from "node:crypto";
 import sharp from "sharp";
 import { revalidatePath } from "next/cache";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { clearAdminSession, requireAdmin, setAdminSession, validateCredentials } from "./auth";
 import { createImage, deleteImageRecord, getImage, updateImage } from "./db";
@@ -107,10 +108,17 @@ async function saveUpload(file: File) {
   };
 }
 
+async function getClientIpAddress() {
+  const headerStore = await headers();
+  const forwardedFor = headerStore.get("x-forwarded-for")?.split(",")[0]?.trim();
+  return forwardedFor || headerStore.get("x-real-ip") || "unknown";
+}
+
 export async function loginAction(formData: FormData) {
   const username = getText(formData, "username");
   const password = getText(formData, "password");
-  if (!validateCredentials(username, password)) {
+  const ipAddress = await getClientIpAddress();
+  if (!(await validateCredentials(username, password, ipAddress))) {
     redirect("/login?error=1");
   }
   await setAdminSession(username);

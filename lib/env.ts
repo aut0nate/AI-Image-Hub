@@ -12,13 +12,19 @@ export function getUploadDir() {
 }
 
 export function getAdminUsername() {
-  return process.env.ADMIN_USERNAME ?? "arkadmin";
+  return process.env.ADMIN_USERNAME ?? "";
 }
 
-export function getAdminPassword() {
-  return process.env.ADMIN_PASSWORD ?? "change-this-password";
+export function getAdminPasswordHash() {
+  return process.env.ADMIN_PASSWORD_HASH?.replaceAll("\\$", "$") ?? "";
 }
 
 export function getSessionSecret() {
-  return process.env.SESSION_SECRET ?? "development-session-secret-change-me";
+  if (process.env.SESSION_SECRET) {
+    return process.env.SESSION_SECRET;
+  }
+  if (process.env.NODE_ENV === "production") {
+    throw new Error("SESSION_SECRET must be set in production");
+  }
+  return "development-session-secret-change-me";
 }

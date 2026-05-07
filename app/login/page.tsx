@@ -39,7 +39,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               <h1>Sign in to your gallery</h1>
             </div>
           </div>
-          {params.error ? <p className="error-text">Those login details were not recognised.</p> : null}
+          {params.error ? <p className="error-text">Those login details did not work.</p> : null}
           <div className="login-fields">
             <div className="field login-field">
               <label htmlFor="username">Username</label>
