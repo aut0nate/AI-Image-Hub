@@ -36,7 +36,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             />
             <div className="login-brand-copy">
               <p className="login-site-name">AI Art Hub</p>
-              <h1>Sign in to your gallery</h1>
+              <p className="login-tagline">Sign in to your gallery</p>
             </div>
           </div>
           {params.error ? <p className="error-text">Those login details did not work.</p> : null}
@@ -57,7 +57,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             </div>
           </div>
           <button className="button primary login-submit" type="submit">
-            Log in
+            Log In
           </button>
         </form>
       </div>

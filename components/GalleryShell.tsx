@@ -146,7 +146,7 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
           ) : (
             <Link className="button" href="/login">
               <LogIn size={16} />
-              Log in
+              Log In
             </Link>
           )}
         </nav>

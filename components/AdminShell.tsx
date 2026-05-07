@@ -1,6 +1,6 @@
 "use client";
 
-import { Edit, Plus, Search, SlidersHorizontal, Trash2 } from "lucide-react";
+import { Edit, LogOut, Plus, Search, SlidersHorizontal, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -69,6 +69,7 @@ export function AdminShell({ categories, images, models }: AdminShellProps) {
             </Link>
             <form action={logoutAction}>
               <button className="button" type="submit">
+                <LogOut size={16} style={{ transform: "scaleX(-1)" }} />
                 Log Out
               </button>
             </form>
