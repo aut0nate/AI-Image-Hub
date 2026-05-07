@@ -64,6 +64,10 @@ export function AdminShell({ categories, images, models }: AdminShellProps) {
       <div className="admin-shell">
         <section className="admin-panel">
           <div className="topbar-actions">
+            <Link className="button primary" href="/admin/new">
+              <Plus size={16} />
+              Upload Image
+            </Link>
             <Link className="button" href="/">
               View Gallery
             </Link>
@@ -73,10 +77,6 @@ export function AdminShell({ categories, images, models }: AdminShellProps) {
                 Log Out
               </button>
             </form>
-            <Link className="button primary" href="/admin/new">
-              <Plus size={16} />
-              Upload Image
-            </Link>
           </div>
           <div>
             <div className="panel-kicker">Admin</div>
