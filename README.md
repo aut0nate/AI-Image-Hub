@@ -8,7 +8,6 @@ It is for people who want a simple gallery where visitors can browse finished im
 
 ![Screenshot or Preview](./images/AI-Art-Hub.jpeg)
 
-
 ## Features
 
 - Publish AI-generated images with their prompts, model details, categories, and dates.
