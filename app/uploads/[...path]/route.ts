@@ -18,7 +18,12 @@ type UploadRouteProps = {
   }>;
 };
 
-export async function GET(_request: Request, { params }: UploadRouteProps) {
+function createDownloadHeader(filename: string) {
+  const fallbackFilename = filename.replace(/["\\]/g, "");
+  return `attachment; filename="${fallbackFilename}"; filename*=UTF-8''${encodeURIComponent(filename)}`;
+}
+
+export async function GET(request: Request, { params }: UploadRouteProps) {
   const { path: filePathParts } = await params;
   if (filePathParts.length !== 1) {
     notFound();
@@ -36,11 +41,17 @@ export async function GET(_request: Request, { params }: UploadRouteProps) {
 
   try {
     const file = await fs.readFile(filePath);
+    const headers: Record<string, string> = {
+      "Cache-Control": "public, max-age=31536000, immutable",
+      "Content-Type": contentType
+    };
+
+    if (new URL(request.url).searchParams.get("download") === "1") {
+      headers["Content-Disposition"] = createDownloadHeader(filename);
+    }
+
     return new Response(file, {
-      headers: {
-        "Cache-Control": "public, max-age=31536000, immutable",
-        "Content-Type": contentType
-      }
+      headers
     });
   } catch (error) {
     const code = (error as NodeJS.ErrnoException).code;

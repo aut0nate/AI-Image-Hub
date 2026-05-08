@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Copy, LogIn, Search, SlidersHorizontal, Upload, X } from "lucide-react";
+import { Check, Copy, Download, Link2, LogIn, Search, SlidersHorizontal, Upload, X } from "lucide-react";
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,6 +15,12 @@ type GalleryShellProps = {
   models: string[];
 };
 
+type CopyFeedback = {
+  action: "link" | "prompt";
+  imageId: string;
+  status: "copied" | "failed";
+};
+
 export function GalleryShell({ images, categories, isAdmin, models }: GalleryShellProps) {
   const router = useRouter();
   const pathname = usePathname();
@@ -23,13 +29,17 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
   const [activeModels, setActiveModels] = useState<string[]>([]);
   const [textSearch, setTextSearch] = useState("");
   const [filtersOpen, setFiltersOpen] = useState(false);
-  const [copiedImageId, setCopiedImageId] = useState<string | null>(null);
+  const [copyFeedback, setCopyFeedback] = useState<CopyFeedback | null>(null);
   const [expandedPromptImageId, setExpandedPromptImageId] = useState<string | null>(null);
   const [isMobileImageExpanded, setIsMobileImageExpanded] = useState(false);
   const selectedId = searchParams.get("image");
   const selectedImage = images.find((image) => image.id === selectedId) ?? null;
   const shouldCollapsePrompt = Boolean(selectedImage && selectedImage.prompt.length > 360);
   const promptExpanded = Boolean(selectedImage && expandedPromptImageId === selectedImage.id);
+  const selectedLinkCopyStatus =
+    selectedImage && copyFeedback?.imageId === selectedImage.id && copyFeedback.action === "link" ? copyFeedback.status : null;
+  const selectedPromptCopyStatus =
+    selectedImage && copyFeedback?.imageId === selectedImage.id && copyFeedback.action === "prompt" ? copyFeedback.status : null;
 
   const filteredImages = useMemo(() => {
     const searchKeywords = textSearch
@@ -80,9 +90,9 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
     router.push(query ? `${pathname}?${query}` : pathname, { scroll: false });
   }
 
-  function copyPromptWithSelection(prompt: string) {
+  function copyTextWithSelection(text: string) {
     const textarea = document.createElement("textarea");
-    textarea.value = prompt;
+    textarea.value = text;
     textarea.setAttribute("readonly", "");
     textarea.style.position = "fixed";
     textarea.style.inset = "0 auto auto 0";
@@ -97,12 +107,12 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
     return copied;
   }
 
-  async function copyPrompt(image: GalleryImage) {
-    let copied = copyPromptWithSelection(image.prompt);
+  async function copyText(text: string) {
+    let copied = false;
 
-    if (!copied && navigator.clipboard?.writeText) {
+    if (navigator.clipboard?.writeText) {
       try {
-        await navigator.clipboard.writeText(image.prompt);
+        await navigator.clipboard.writeText(text);
         copied = true;
       } catch {
         copied = false;
@@ -110,11 +120,31 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
     }
 
     if (!copied) {
-      return;
+      copied = copyTextWithSelection(text);
     }
 
-    setCopiedImageId(image.id);
-    window.setTimeout(() => setCopiedImageId(null), 1600);
+    return copied;
+  }
+
+  function showCopyFeedback(image: GalleryImage, action: CopyFeedback["action"], status: CopyFeedback["status"]) {
+    setCopyFeedback({ action, imageId: image.id, status });
+    window.setTimeout(() => {
+      setCopyFeedback((currentFeedback) =>
+        currentFeedback?.imageId === image.id && currentFeedback.action === action ? null : currentFeedback
+      );
+    }, 1600);
+  }
+
+  async function copyPrompt(image: GalleryImage) {
+    const copied = await copyText(image.prompt);
+    showCopyFeedback(image, "prompt", copied ? "copied" : "failed");
+  }
+
+  async function copyImageLink(image: GalleryImage) {
+    const url = new URL(window.location.href);
+    url.searchParams.set("image", image.id);
+    const copied = await copyText(url.toString());
+    showCopyFeedback(image, "link", copied ? "copied" : "failed");
   }
 
   return (
@@ -290,15 +320,43 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
             <aside className="prompt-panel">
               <div className="prompt-heading">
                 <h2>Prompt Details</h2>
-                <button
-                  aria-label="Copy prompt"
-                  className="button copy-button"
-                  onClick={() => copyPrompt(selectedImage)}
-                  type="button"
-                >
-                  {copiedImageId === selectedImage.id ? <Check size={16} /> : <Copy size={16} />}
-                  {copiedImageId === selectedImage.id ? "Copied" : "Copy"}
-                </button>
+                <div className="modal-actions" aria-label="Image actions">
+                  <button
+                    aria-label="Copy image link"
+                    className="button modal-action-button"
+                    onClick={() => copyImageLink(selectedImage)}
+                    type="button"
+                  >
+                    {selectedLinkCopyStatus === "copied" ? <Check size={16} /> : <Link2 size={16} />}
+                    {selectedLinkCopyStatus === "copied"
+                      ? "Link Copied"
+                      : selectedLinkCopyStatus === "failed"
+                        ? "Copy Failed"
+                        : "Copy Link"}
+                  </button>
+                  <a
+                    aria-label="Download full image"
+                    className="button modal-action-button"
+                    download
+                    href={`${selectedImage.imagePath}?download=1`}
+                  >
+                    <Download size={16} />
+                    Download
+                  </a>
+                  <button
+                    aria-label="Copy prompt"
+                    className="button modal-action-button prompt-copy-action"
+                    onClick={() => copyPrompt(selectedImage)}
+                    type="button"
+                  >
+                    {selectedPromptCopyStatus === "copied" ? <Check size={16} /> : <Copy size={16} />}
+                    {selectedPromptCopyStatus === "copied"
+                      ? "Prompt Copied"
+                      : selectedPromptCopyStatus === "failed"
+                        ? "Copy Failed"
+                        : "Copy Prompt"}
+                  </button>
+                </div>
               </div>
               <div className="prompt-copy">
                 <p className={`prompt-text ${shouldCollapsePrompt && !promptExpanded ? "collapsed" : ""}`}>
