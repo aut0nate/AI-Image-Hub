@@ -439,11 +439,9 @@ img {
 }
 
 .prompt-heading {
-  display: flex;
+  display: grid;
   flex: 0 0 auto;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
+  gap: 12px;
 }
 
 .prompt-panel .prompt-heading h2 {
@@ -456,8 +454,23 @@ img {
   text-transform: uppercase;
 }
 
-.copy-button {
+.modal-actions {
+  display: grid;
   flex: 0 0 auto;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+
+.modal-action-button {
+  min-height: 40px;
+  min-width: 0;
+  padding-inline: 10px;
+  white-space: nowrap;
+}
+
+.prompt-copy-action {
+  grid-column: 1 / -1;
 }
 
 .panel-kicker,
@@ -525,7 +538,7 @@ img {
 .icon-button {
   position: absolute;
   top: -12px;
-  right: -12px;
+  left: -12px;
   z-index: 2;
   display: grid;
   width: 44px;
@@ -923,7 +936,7 @@ img {
 
   .icon-button {
     top: 10px;
-    right: 10px;
+    left: 10px;
   }
 }
 
@@ -1003,12 +1016,7 @@ img {
     justify-content: flex-start;
   }
 
-  .prompt-heading {
-    align-items: stretch;
-    flex-direction: column;
-  }
-
-  .copy-button {
+  .modal-action-button {
     width: 100%;
   }
 
@@ -1133,6 +1141,10 @@ img {
   .form-panel,
   .admin-panel {
     border-radius: 20px;
+  }
+
+  .modal-actions {
+    grid-template-columns: 1fr;
   }
 
   .login-panel {
