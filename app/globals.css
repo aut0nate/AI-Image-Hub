@@ -77,6 +77,12 @@ img {
   backdrop-filter: blur(18px);
 }
 
+.topbar-hidden-mobile {
+  transform: translateY(calc(-100% - 16px));
+  opacity: 0;
+  pointer-events: none;
+}
+
 .brand {
   display: inline-flex;
   align-items: flex-start;
@@ -954,6 +960,7 @@ img {
   .topbar {
     align-items: flex-start;
     flex-direction: column;
+    transition: transform 220ms ease, opacity 220ms ease;
   }
 
   .brand {
