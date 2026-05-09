@@ -292,7 +292,12 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
       )}
 
       {selectedImage ? (
-        <section aria-modal="true" className="modal-backdrop" onClick={closeImage} role="dialog">
+        <section
+          aria-modal="true"
+          className={`modal-backdrop ${isMobileImageExpanded ? "mobile-image-expanded" : ""}`}
+          onClick={closeImage}
+          role="dialog"
+        >
           <div
             className={`modal-shell ${isMobileImageExpanded ? "mobile-image-expanded" : ""}`}
             onClick={(event) => event.stopPropagation()}
