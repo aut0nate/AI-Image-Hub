@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "password:hash": "node scripts/hash-password.mjs",
+    "uploads:check": "node scripts/check-uploads.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

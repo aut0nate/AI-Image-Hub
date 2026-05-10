@@ -104,7 +104,7 @@ Environment notes:
 
 ## Test Locally Using Docker
 
-Docker is useful for checking the container before server deployment. The local Compose file builds the image from this repository, reads `.env`, publishes the app on `127.0.0.1:3000`, and stores SQLite data, uploads, and the Next.js cache in persistent Docker volumes.
+Docker is useful for checking the container before server deployment. The local Compose file builds the image from this repository, reads `.env`, publishes the app on `127.0.0.1:3001`, and stores SQLite data, uploads, and the Next.js cache in local project folders.
 
 1. Start the local Docker stack:
 
@@ -112,7 +112,7 @@ Docker is useful for checking the container before server deployment. The local 
     docker compose up --build
     ```
 
-    The app will be available at `http://127.0.0.1:3000`.
+    The app will be available at `http://127.0.0.1:3001`.
 
 2. Stop the stack:
 
