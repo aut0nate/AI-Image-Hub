@@ -98,7 +98,7 @@ Build and run with Docker Compose:
 docker compose up --build -d
 ```
 
-The Compose file maps the app to port `3000` and creates persistent volumes for `/app/data` and `/app/uploads`.
+The local Compose file maps the app to `127.0.0.1:3001` and bind-mounts `./data` to `/app/data` and `./uploads` to `/app/uploads`. The production Compose file uses persistent Docker volumes for `/app/data` and `/app/uploads`.
 
 ## Project Rules
 
