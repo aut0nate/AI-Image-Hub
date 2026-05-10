@@ -12,17 +12,12 @@ services:
       DATABASE_URL: file:/app/data/gallery.sqlite
       UPLOAD_DIR: /app/uploads
     ports:
-      - "127.0.0.1:3000:3000"
+      - "127.0.0.1:3001:3001"
     volumes:
-      - ai-gallery-data:/app/data
-      - ai-gallery-uploads:/app/uploads
-      - ai-gallery-next-cache:/app/.next/cache
+      - ./data:/app/data
+      - ./uploads:/app/uploads
+      - ./next-cache:/app/.next/cache
     logging:
       options:
         max-size: 10m
         max-file: "3"
-
-volumes:
-  ai-gallery-data:
-  ai-gallery-uploads:
-  ai-gallery-next-cache:
