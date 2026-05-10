@@ -1,7 +1,7 @@
 "use client";
 
 import { Check, Copy, Download, Link2, LogIn, Search, SlidersHorizontal, Upload, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -32,6 +32,7 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
   const [copyFeedback, setCopyFeedback] = useState<CopyFeedback | null>(null);
   const [expandedPromptImageId, setExpandedPromptImageId] = useState<string | null>(null);
   const [isMobileImageExpanded, setIsMobileImageExpanded] = useState(false);
+  const [isMobileTopbarHidden, setIsMobileTopbarHidden] = useState(false);
   const selectedId = searchParams.get("image");
   const selectedImage = images.find((image) => image.id === selectedId) ?? null;
   const shouldCollapsePrompt = Boolean(selectedImage && selectedImage.prompt.length > 360);
@@ -135,6 +136,37 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
     }, 1600);
   }
 
+
+  useEffect(() => {
+    const mobileBreakpoint = 760;
+
+    if (typeof window === "undefined" || window.innerWidth > mobileBreakpoint) {
+      return;
+    }
+
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      const scrollingDown = currentScrollY > lastScrollY;
+      const nearTop = currentScrollY < 72;
+
+      if (nearTop || !scrollingDown) {
+        setIsMobileTopbarHidden(false);
+      } else if (currentScrollY - lastScrollY > 6) {
+        setIsMobileTopbarHidden(true);
+      }
+
+      lastScrollY = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   async function copyPrompt(image: GalleryImage) {
     const copied = await copyText(image.prompt);
     showCopyFeedback(image, "prompt", copied ? "copied" : "failed");
@@ -149,7 +181,7 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
 
   return (
     <main className="page-shell">
-      <header className="topbar">
+      <header className={`topbar ${isMobileTopbarHidden ? "topbar-hidden-mobile" : ""}`}>
         <Link className="brand" href="/" aria-label="AI Art Hub home">
           <span className="brand-mark">
             <Image alt="" height={46} priority src="/brand/ai-art-hub-logo.png" width={46} />
@@ -292,7 +324,12 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
       )}
 
       {selectedImage ? (
-        <section aria-modal="true" className="modal-backdrop" onClick={closeImage} role="dialog">
+        <section
+          aria-modal="true"
+          className={`modal-backdrop ${isMobileImageExpanded ? "mobile-image-expanded" : ""}`}
+          onClick={closeImage}
+          role="dialog"
+        >
           <div
             className={`modal-shell ${isMobileImageExpanded ? "mobile-image-expanded" : ""}`}
             onClick={(event) => event.stopPropagation()}
