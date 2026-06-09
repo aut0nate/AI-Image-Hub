@@ -182,15 +182,16 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
   return (
     <main className="page-shell">
       <header className={`topbar ${isMobileTopbarHidden ? "topbar-hidden-mobile" : ""}`}>
-        <Link className="brand" href="/" aria-label="AI Art Hub home">
+        <Link className="brand" href="/" aria-label="AI Image Hub home">
           <span className="brand-mark">
             <Image alt="" height={46} priority src="/brand/ai-art-hub-logo.png" width={46} />
           </span>
           <span className="brand-text">
-            <span className="brand-title">AI Art Hub</span>
+            <span className="brand-title">AI Image Hub</span>
             <span className="brand-subtitle">
-              A personal collection of <span className="accent-text">AI-generated</span> images, showcasing how models
-              transform ideas into visuals. All prompts are available for you to copy, tweak, and experiment with.
+              An experimental showcase of <span className="accent-text">AI-generated</span> imagery, demonstrating how
+              different models turn prompts into visual results. Every image includes the original prompt so you can
+              learn, remix, and explore the creative process yourself.
             </span>
           </span>
         </Link>

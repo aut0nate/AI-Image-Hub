@@ -1,8 +1,8 @@
-# AI Art Hub
+# AI Image Hub
 
 ## Project Overview
 
-AI Art Hub is a dark-mode-only personal gallery for sharing AI-generated images and the prompts behind them. The public site is browse-only. The owner can log in to upload, edit, and delete images.
+AI Image Hub is a dark-mode-only personal gallery for sharing AI-generated images and the prompts behind them. The public site is browse-only. The owner can log in to upload, edit, and delete images.
 
 There are no social features: do not add likes, comments, followers, public accounts, or social metrics.
 

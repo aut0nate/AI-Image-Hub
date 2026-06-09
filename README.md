@@ -1,8 +1,8 @@
-# AI Art Hub
+# AI Image Hub
 
 ## Introduction
 
-AI Art Hub is a personal web app for publishing AI-generated images and the prompts behind them.
+AI Image Hub is a personal web app for publishing AI-generated images and the prompts behind them.
 
 It is for people who want a simple gallery where visitors can browse finished images, view prompt details, and filter the collection by category. The public site is browse-only, while a single owner can sign in to upload, edit, and delete images.
 
@@ -199,7 +199,7 @@ Back up the SQLite database and uploaded images regularly from the `ai-gallery-d
 
 ## AI-Assisted Development
 
-AI Art Hub was built with **OpenAI Codex using GPT-5.5**. This repository includes an [`AGENTS.md`](./AGENTS.md) file, which provides structured instructions and context for AI coding agents. It defines expectations, constraints, and project-specific guidance to help keep contributions consistent and reliable.
+AI Image Hub was built with **OpenAI Codex using GPT-5.5**. This repository includes an [`AGENTS.md`](./AGENTS.md) file, which provides structured instructions and context for AI coding agents. It defines expectations, constraints, and project-specific guidance to help keep contributions consistent and reliable.
 
 ## Contributions
 
