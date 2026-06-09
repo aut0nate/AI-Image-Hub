@@ -28,8 +28,11 @@ services:
 
 volumes:
   ai-gallery-data:
+    name: ai-gallery-data
   ai-gallery-uploads:
+    name: ai-gallery-uploads
   ai-gallery-next-cache:
+    name: ai-gallery-next-cache
 
 networks:
   edge-net:
