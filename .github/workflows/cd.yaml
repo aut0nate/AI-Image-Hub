@@ -63,7 +63,11 @@ jobs:
           VPS_USER: ${{ secrets.VPS_USER }}
         run: |
           mkdir -p ~/.ssh
-          printf '%s\n' "${VPS_SSH_KEY}" > ~/.ssh/deploy_key
+          if printf '%s' "${VPS_SSH_KEY}" | grep -q '\\n'; then
+            printf '%b\n' "${VPS_SSH_KEY}" > ~/.ssh/deploy_key
+          else
+            printf '%s\n' "${VPS_SSH_KEY}" > ~/.ssh/deploy_key
+          fi
           chmod 600 ~/.ssh/deploy_key
 
           for required_secret in VPS_HOST VPS_PORT VPS_SSH_KEY VPS_USER; do
