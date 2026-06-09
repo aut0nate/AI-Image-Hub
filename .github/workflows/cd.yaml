@@ -56,31 +56,46 @@ jobs:
           ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Configure SSH
+        env:
+          VPS_HOST: ${{ secrets.VPS_HOST }}
+          VPS_PORT: ${{ secrets.VPS_PORT }}
+          VPS_SSH_KEY: ${{ secrets.VPS_SSH_KEY }}
+          VPS_USER: ${{ secrets.VPS_USER }}
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          printf '%s\n' "${VPS_SSH_KEY}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p "${{ secrets.VPS_PORT }}" -H "${{ secrets.VPS_HOST }}" >> ~/.ssh/known_hosts
+
+          for required_secret in VPS_HOST VPS_PORT VPS_SSH_KEY VPS_USER; do
+            if [ -z "${!required_secret}" ]; then
+              echo "Missing required GitHub Actions secret: ${required_secret}"
+              exit 1
+            fi
+          done
+
+          cat > ~/.ssh/config << EOF
+          Host production
+            HostName ${VPS_HOST}
+            Port ${VPS_PORT}
+            User ${VPS_USER}
+            IdentityFile ~/.ssh/deploy_key
+            StrictHostKeyChecking accept-new
+            UserKnownHostsFile ~/.ssh/known_hosts
+            ServerAliveInterval 30
+          EOF
+          chmod 600 ~/.ssh/config
 
       - name: Prepare deployment directory
         run: |
-          ssh -i ~/.ssh/deploy_key \
-            -p "${{ secrets.VPS_PORT }}" \
-            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" \
-            "mkdir -p '${DEPLOY_PATH}' && test -w '${DEPLOY_PATH}'"
+          ssh production "mkdir -p '${DEPLOY_PATH}' && test -w '${DEPLOY_PATH}'"
 
       - name: Upload production Compose file
         run: |
-          scp -i ~/.ssh/deploy_key \
-            -P "${{ secrets.VPS_PORT }}" \
-            docker-compose.prod.yaml \
-            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}:${DEPLOY_PATH}/docker-compose.yaml"
+          scp docker-compose.prod.yaml "production:${DEPLOY_PATH}/docker-compose.yaml"
 
       - name: Deploy container
         run: |
-          ssh -i ~/.ssh/deploy_key \
-            -p "${{ secrets.VPS_PORT }}" \
-            "${{ secrets.VPS_USER }}@${{ secrets.VPS_HOST }}" << EOF
+          ssh production << EOF
           set -e
 
           cd "${DEPLOY_PATH}"
