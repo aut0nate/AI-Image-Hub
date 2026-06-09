@@ -27,7 +27,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
         <form action={loginAction} className="login-panel">
           <div className="login-brand">
             <Image
-              alt="AI Art Hub logo"
+              alt="AI Image Hub logo"
               className="login-logo"
               height={112}
               priority
@@ -35,7 +35,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               width={112}
             />
             <div className="login-brand-copy">
-              <p className="login-site-name">AI Art Hub</p>
+              <p className="login-site-name">AI Image Hub</p>
               <p className="login-tagline">Sign in to your gallery</p>
             </div>
           </div>
