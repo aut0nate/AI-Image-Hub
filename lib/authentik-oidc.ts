@@ -78,7 +78,17 @@ function decodeStateCookie(value: string | undefined) {
 }
 
 export function getConfiguredAppOrigin(request: NextRequest) {
-  return getAppUrl() || request.nextUrl.origin;
+  const appUrl = getAppUrl();
+  if (appUrl) {
+    return appUrl;
+  }
+
+  const redirectUri = getAuthentikRedirectUri();
+  if (redirectUri) {
+    return new URL(redirectUri).origin;
+  }
+
+  return request.nextUrl.origin;
 }
 
 export function getCallbackUrl(request: NextRequest) {

@@ -66,11 +66,11 @@ Before running this project, install:
 
 Environment notes:
 
-- `APP_URL` is the public base URL for the app. For local npm development, use the same host you open in the browser, for example `http://127.0.0.1:3000`.
+- `APP_URL` is the public base URL for the app. For local npm development, use the same host you open in the browser, for example `http://127.0.0.1:3000`. In production this should be the public HTTPS origin so post-login redirects do not use the internal container URL.
 - `AUTHENTIK_ISSUER` is the Authentik application issuer, usually `https://auth.example.com/application/o/<slug>`.
 - `AUTHENTIK_CLIENT_ID` and `AUTHENTIK_CLIENT_SECRET` come from the Authentik OAuth2/OpenID Provider.
 - `AUTHENTIK_ADMIN_EMAIL` must match the email claim for the owner account allowed into the admin area.
-- `AUTHENTIK_REDIRECT_URI` is optional. Set it only when the callback is not `APP_URL + /auth/callback`. The app also supports `APP_URL + /admin/auth/callback` for deployments already configured that way in Authentik.
+- `AUTHENTIK_REDIRECT_URI` is optional. Set it only when the callback is not `APP_URL + /auth/callback`. The app also supports `APP_URL + /admin/auth/callback` for deployments already configured that way in Authentik. When `APP_URL` is not set, the app uses this redirect URI to infer the public origin for callback success and error redirects.
 - `SESSION_SECRET` signs admin session cookies. Keep it long, random, and stable for a deployment.
 - `DATABASE_URL` controls the SQLite database path. Local npm development uses `file:./data/gallery.sqlite`.
 - `UPLOAD_DIR` controls where uploaded images are stored. Local npm development uses `./uploads`.
