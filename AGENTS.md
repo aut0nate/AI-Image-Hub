@@ -43,15 +43,19 @@ npm run build
 
 Copy `.env.example` to `.env` and set strong values before production use.
 
-- `ADMIN_USERNAME`: owner login username
-- `ADMIN_PASSWORD_HASH`: bcrypt hash of the owner login password
+- `APP_URL`: public base URL used for Authentik callback and post-login redirects
+- `AUTHENTIK_ISSUER`: Authentik application issuer, usually `https://auth.example.com/application/o/<slug>`
+- `AUTHENTIK_CLIENT_ID`: Authentik OAuth2/OpenID client ID
+- `AUTHENTIK_CLIENT_SECRET`: Authentik OAuth2/OpenID client secret
+- `AUTHENTIK_ADMIN_EMAIL`: owner email allowed to access the admin area
+- `AUTHENTIK_REDIRECT_URI`: optional override for the callback URL
 - `SESSION_SECRET`: long random string used to sign admin sessions
 - `DATABASE_URL`: SQLite database path, for example `file:./data/gallery.sqlite`
 - `UPLOAD_DIR`: folder for uploaded images, for example `./uploads`
 
-Generate password hashes with `npm run password:hash -- "your-strong-password"` and generate session secrets with `openssl rand -base64 48`. In Next.js `.env` files, bcrypt hash `$` characters must be escaped as `\$`. In Docker Compose `.env` files, use `$$` instead so Compose does not treat bcrypt segments as environment variable names.
+Generate session secrets with `openssl rand -base64 48`. Configure Authentik as a confidential OAuth2/OpenID Provider with redirect URI `<APP_URL>/auth/callback` and scopes `openid`, `profile`, and `email`.
 
-Never commit `.env`, plaintext passwords, credentials, database files, uploaded images, or private keys.
+Never commit `.env`, Authentik client secrets, credentials, database files, uploaded images, or private keys.
 
 ## Code Style Guidelines
 
@@ -83,9 +87,9 @@ Manually verify:
 ## Security Considerations
 
 - Admin access is intentionally single-owner only.
-- Admin passwords are verified with bcrypt hashes only.
+- Admin identity is verified through Authentik OpenID Connect.
+- Only the email configured in `AUTHENTIK_ADMIN_EMAIL` may access the admin area.
 - Sessions are stored in signed HTTP-only cookies with server-side expiry checks.
-- Failed login attempts are throttled by username and IP address.
 - Uploaded files must be images and should remain size-limited.
 - Do not hardcode secrets or credentials.
 - Keep uploaded files and SQLite data in persistent volumes on the VPS.
