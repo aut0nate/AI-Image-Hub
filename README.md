@@ -70,7 +70,7 @@ Environment notes:
 - `AUTHENTIK_ISSUER` is the Authentik application issuer, usually `https://auth.example.com/application/o/<slug>`.
 - `AUTHENTIK_CLIENT_ID` and `AUTHENTIK_CLIENT_SECRET` come from the Authentik OAuth2/OpenID Provider.
 - `AUTHENTIK_ADMIN_EMAIL` must match the email claim for the owner account allowed into the admin area.
-- `AUTHENTIK_REDIRECT_URI` is optional. Set it only when the callback is not `APP_URL + /auth/callback`.
+- `AUTHENTIK_REDIRECT_URI` is optional. Set it only when the callback is not `APP_URL + /auth/callback`. The app also supports `APP_URL + /admin/auth/callback` for deployments already configured that way in Authentik.
 - `SESSION_SECRET` signs admin session cookies. Keep it long, random, and stable for a deployment.
 - `DATABASE_URL` controls the SQLite database path. Local npm development uses `file:./data/gallery.sqlite`.
 - `UPLOAD_DIR` controls where uploaded images are stored. Local npm development uses `./uploads`.
@@ -81,7 +81,7 @@ Create an OAuth2/OpenID Provider in Authentik:
 
 - Provider type: OAuth2/OpenID Provider.
 - Client type: Confidential.
-- Redirect URI: `<APP_URL>/auth/callback`, for example `https://gallery.example.com/auth/callback`.
+- Redirect URI: `<APP_URL>/auth/callback`, for example `https://gallery.example.com/auth/callback`. Existing Authentik providers may also use `<APP_URL>/admin/auth/callback`.
 - Signing key: an RSA key so ID tokens are signed with RS256.
 - Scopes: `openid`, `profile`, and `email`.
 

@@ -53,7 +53,7 @@ Copy `.env.example` to `.env` and set strong values before production use.
 - `DATABASE_URL`: SQLite database path, for example `file:./data/gallery.sqlite`
 - `UPLOAD_DIR`: folder for uploaded images, for example `./uploads`
 
-Generate session secrets with `openssl rand -base64 48`. Configure Authentik as a confidential OAuth2/OpenID Provider with redirect URI `<APP_URL>/auth/callback` and scopes `openid`, `profile`, and `email`.
+Generate session secrets with `openssl rand -base64 48`. Configure Authentik as a confidential OAuth2/OpenID Provider with redirect URI `<APP_URL>/auth/callback` or `<APP_URL>/admin/auth/callback` and scopes `openid`, `profile`, and `email`.
 
 Never commit `.env`, Authentik client secrets, credentials, database files, uploaded images, or private keys.
 

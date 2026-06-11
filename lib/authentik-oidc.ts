@@ -154,7 +154,7 @@ export async function buildAuthentikLoginResponse(request: NextRequest) {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
-    path: "/auth",
+    path: "/",
     maxAge: OAUTH_STATE_TTL_SECONDS
   });
   return response;
@@ -233,7 +233,7 @@ export function clearOAuthStateCookie(response: NextResponse) {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
-    path: "/auth",
+    path: "/",
     maxAge: 0
   });
 }
