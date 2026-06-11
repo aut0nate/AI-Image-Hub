@@ -11,12 +11,28 @@ export function getUploadDir() {
   return path.isAbsolute(value) ? value : path.join(/* turbopackIgnore: true */ process.cwd(), value);
 }
 
-export function getAdminUsername() {
-  return process.env.ADMIN_USERNAME ?? "";
+export function getAppUrl() {
+  return process.env.APP_URL?.trim().replace(/\/$/, "") ?? "";
 }
 
-export function getAdminPasswordHash() {
-  return process.env.ADMIN_PASSWORD_HASH?.replaceAll("\\$", "$") ?? "";
+export function getAuthentikIssuer() {
+  return process.env.AUTHENTIK_ISSUER?.trim().replace(/\/$/, "") ?? "";
+}
+
+export function getAuthentikClientId() {
+  return process.env.AUTHENTIK_CLIENT_ID?.trim() ?? "";
+}
+
+export function getAuthentikClientSecret() {
+  return process.env.AUTHENTIK_CLIENT_SECRET ?? "";
+}
+
+export function getAuthentikAdminEmail() {
+  return process.env.AUTHENTIK_ADMIN_EMAIL?.trim().toLowerCase() ?? "";
+}
+
+export function getAuthentikRedirectUri() {
+  return process.env.AUTHENTIK_REDIRECT_URI?.trim() ?? "";
 }
 
 export function getSessionSecret() {

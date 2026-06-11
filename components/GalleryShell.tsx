@@ -209,7 +209,7 @@ export function GalleryShell({ images, categories, isAdmin, models }: GalleryShe
           ) : (
             <Link className="button" href="/login">
               <LogIn size={16} />
-              Log In
+              Sign In
             </Link>
           )}
         </nav>

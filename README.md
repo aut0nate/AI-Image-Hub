@@ -22,7 +22,7 @@ It is for people who want a simple gallery where visitors can browse finished im
 - React
 - TypeScript
 - SQLite
-- `bcrypt` for admin password hashing
+- Authentik OpenID Connect for owner sign-in
 - Docker and Docker Compose
 - GitHub Container Registry
 - GitHub Actions
@@ -35,6 +35,7 @@ Before running this project, install:
 - npm
 - Docker and Docker Compose, for container testing or server deployment
 - OpenSSL, for generating a local session secret
+- An Authentik OAuth2/OpenID Provider for sign-in
 
 ## Configuration (.env)
 
@@ -47,22 +48,17 @@ Before running this project, install:
 2. Update `.env` with values for your local setup:
 
     ```bash
-    ADMIN_USERNAME=gallery-admin
-    ADMIN_PASSWORD_HASH="replace-with-output-from-npm-run-password-hash"
+    APP_URL=http://127.0.0.1:3000
+    AUTHENTIK_ISSUER=https://auth.example.com/application/o/ai-image-hub
+    AUTHENTIK_CLIENT_ID=replace-with-authentik-client-id
+    AUTHENTIK_CLIENT_SECRET=replace-with-authentik-client-secret
+    AUTHENTIK_ADMIN_EMAIL=owner@example.com
     SESSION_SECRET=replace-with-a-long-random-secret
     DATABASE_URL=file:./data/gallery.sqlite
     UPLOAD_DIR=./uploads
     ```
 
-3. Generate an admin password hash:
-
-    ```bash
-    npm run password:hash -- "your-strong-password"
-    ```
-
-    The command prints an `ADMIN_PASSWORD_HASH=...` line that is escaped safely for a Next.js `.env` file used by `npm run dev`. Keep the plain password in your password manager, not in the project.
-
-4. Generate a session secret:
+3. Generate a session secret:
 
     ```bash
     openssl rand -base64 48
@@ -70,11 +66,28 @@ Before running this project, install:
 
 Environment notes:
 
-- `ADMIN_USERNAME` is the owner username allowed to access the admin area.
-- `ADMIN_PASSWORD_HASH` is the bcrypt hash for the admin password. Escape `$` characters as `\$` in a Next.js local `.env` file. In a Docker Compose `.env` file, use `$$` instead so Compose does not treat bcrypt segments as environment variable names.
+- `APP_URL` is the public base URL for the app. For local npm development, use the same host you open in the browser, for example `http://127.0.0.1:3000`.
+- `AUTHENTIK_ISSUER` is the Authentik application issuer, usually `https://auth.example.com/application/o/<slug>`.
+- `AUTHENTIK_CLIENT_ID` and `AUTHENTIK_CLIENT_SECRET` come from the Authentik OAuth2/OpenID Provider.
+- `AUTHENTIK_ADMIN_EMAIL` must match the email claim for the owner account allowed into the admin area.
+- `AUTHENTIK_REDIRECT_URI` is optional. Set it only when the callback is not `APP_URL + /auth/callback`.
 - `SESSION_SECRET` signs admin session cookies. Keep it long, random, and stable for a deployment.
 - `DATABASE_URL` controls the SQLite database path. Local npm development uses `file:./data/gallery.sqlite`.
 - `UPLOAD_DIR` controls where uploaded images are stored. Local npm development uses `./uploads`.
+
+## Authentik Setup
+
+Create an OAuth2/OpenID Provider in Authentik:
+
+- Provider type: OAuth2/OpenID Provider.
+- Client type: Confidential.
+- Redirect URI: `<APP_URL>/auth/callback`, for example `https://gallery.example.com/auth/callback`.
+- Signing key: an RSA key so ID tokens are signed with RS256.
+- Scopes: `openid`, `profile`, and `email`.
+
+Create an Authentik Application using that provider. The application slug should match the slug in `AUTHENTIK_ISSUER`, for example `ai-image-hub` in `https://auth.example.com/application/o/ai-image-hub`.
+
+The admin area is single-owner only. The Authentik user's email address must match `AUTHENTIK_ADMIN_EMAIL`.
 
 ## Test Locally
 
@@ -137,8 +150,11 @@ For most Docker-based deployments:
 4. Create a `.env` file:
 
     ```bash
-    ADMIN_USERNAME=gallery-admin
-    ADMIN_PASSWORD_HASH=$$2b$$12$$replace-with-your-bcrypt-password-hash
+    APP_URL=https://gallery.example.com
+    AUTHENTIK_ISSUER=https://auth.example.com/application/o/ai-image-hub
+    AUTHENTIK_CLIENT_ID=replace-with-authentik-client-id
+    AUTHENTIK_CLIENT_SECRET=replace-with-authentik-client-secret
+    AUTHENTIK_ADMIN_EMAIL=owner@example.com
     SESSION_SECRET=replace-with-a-long-random-secret
     DATABASE_URL=file:./data/gallery.sqlite
     UPLOAD_DIR=./uploads
@@ -170,7 +186,8 @@ After deployment, verify:
 
 - The public homepage loads.
 - `/login` loads.
-- Admin login works.
+- The login button redirects to Authentik.
+- Authentik sign-in returns to `/admin`.
 - Image details and prompt copy controls work.
 - Image search and filters work.
 - Uploads remain available after restarting the container.
@@ -191,10 +208,10 @@ Back up the SQLite database and uploaded images regularly from the `ai-gallery-d
 
 - Do not commit `.env`.
 - Keep `SESSION_SECRET` long and random.
-- Use `npm run password:hash` rather than storing a plain password.
-- The admin login uses bcrypt password hashes, timing-safe comparisons, signed HTTP-only cookies, and short in-memory throttling after repeated failed login attempts.
+- Store Authentik client secrets in `.env` or deployment secret storage only.
+- The admin login uses Authentik OIDC with PKCE, verified ID tokens, owner email allow-listing, and signed HTTP-only app session cookies.
 - Store production secrets in the deployment environment or GitHub Actions secrets, not in the repository.
-- Use a unique admin password for production and rotate `SESSION_SECRET` if it is ever exposed. Rotating the secret signs every existing admin session out.
+- Rotate `SESSION_SECRET` if it is ever exposed. Rotating the secret signs every existing admin session out.
 - Public visitors should only see images and prompts that are intended to be public.
 
 ## AI-Assisted Development
