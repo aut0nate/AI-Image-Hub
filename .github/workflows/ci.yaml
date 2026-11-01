@@ -52,6 +52,11 @@ jobs:
 
           docker run --detach --name ai-gallery-smoke \
             --publish 3000:3000 \
+            --read-only \
+            --tmpfs /tmp \
+            --volume /app/data \
+            --volume /app/uploads \
+            --volume /app/.next/cache \
             --env ADMIN_USERNAME=gallery-admin \
             --env 'ADMIN_PASSWORD_HASH=$2b$12$QyGvg76XRDuMcKdpLj70jOMuuhFpkl21eSzC32GC8tq2SI2QUSPR.' \
             --env SESSION_SECRET=ci-session-secret-change-me \
@@ -72,4 +77,4 @@ jobs:
 
       - name: Stop smoke test container
         if: always()
-        run: docker rm --force ai-gallery-smoke || true
+        run: docker rm --force --volumes ai-gallery-smoke || true
