@@ -6,6 +6,7 @@ services:
     env_file:
       - .env
     environment:
+      HOSTNAME: 0.0.0.0
       DATABASE_URL: file:/app/data/gallery.sqlite
       UPLOAD_DIR: /app/uploads
     networks:
