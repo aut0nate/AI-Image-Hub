@@ -13,6 +13,7 @@ There are no social features: do not add likes, comments, followers, public acco
 - React
 - SQLite via `better-sqlite3`
 - Local filesystem uploads
+- Node.js 24 in the production container
 - Docker and Docker Compose for VPS deployment
 
 ## Local Development
