@@ -65,7 +65,8 @@ jobs:
             "${CI_IMAGE_TAG}"
 
           for attempt in {1..30}; do
-            if curl --fail --silent --show-error http://127.0.0.1:3000/ >/dev/null; then
+            if curl --fail --silent --show-error http://127.0.0.1:3000/ >/dev/null \
+              && [ "$(docker inspect --format '{{.State.Health.Status}}' ai-gallery-smoke)" = "healthy" ]; then
               docker logs ai-gallery-smoke
               exit 0
             fi
