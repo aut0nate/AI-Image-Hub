@@ -15,7 +15,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
     redirect("/admin");
   }
   const params = await searchParams;
-  const errorMessage = params.error ? "Sign in could not be completed. Check your Authentik access and try again." : null;
+  const errorMessage = params.error ? "Sign-in could not be completed. Please try again." : null;
 
   return (
     <main className="login-page">
@@ -42,9 +42,9 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             </div>
           </div>
           {errorMessage ? <p className="error-text">{errorMessage}</p> : null}
-          <Link className="button primary login-submit" href="/auth/login">
+          <Link className="button primary login-submit" href="/auth/login" prefetch={false}>
             <ShieldCheck size={18} />
-            Sign in with Authentik
+            Sign in
           </Link>
         </section>
       </div>
